@@ -81,3 +81,12 @@ function fiorella_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['actions']['submit']['#attributes']['class'][] = 'btn btn-outline-success';
     }
 }
+
+function fiorella_preprocess_menu(array &$variables, $hook) {
+    if ($hook === 'menu') {
+        $current_path = \Drupal::request()->getRequestUri();
+        foreach ($variables['items'] as &$item) {
+            $item['is_active'] = $item['url']->toString() === $current_path;
+        }
+    }
+}
