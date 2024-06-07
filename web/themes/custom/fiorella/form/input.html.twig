@@ -1,0 +1,7 @@
+{% if attributes.type == 'submit' %}
+    <input{{ attributes }} />{{ children }}
+{% elseif attributes.type == 'search' %}
+    <input{{ attributes.addClass('form-control').setAttribute('placeholder', 'Rechercher...') }} />{{ children }}
+{% else %}
+    <input{{ attributes.addClass('form-control') }} />{{ children }}
+{% endif %}

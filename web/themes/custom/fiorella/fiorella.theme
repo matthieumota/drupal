@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Form\FormStateInterface;
 
 function fiorella_page_attachments_alter(array &$attachments) {
     foreach ($attachments['#attached']['html_head'] as $key => $attachment) {
@@ -65,4 +66,18 @@ function fiorella_preprocess_region__header(array &$variables) {
     ];
 
     $variables['show'] = theme_get_setting('setting2');
+}
+
+function fiorella_preprocess_form(array &$variables) {
+    $id = $variables['element']['#form_id'];
+  
+    if ($id === 'search_block_form') {
+        $variables['attributes']['class'][] = 'd-flex gap-2';
+    }
+}
+
+function fiorella_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    if ($form_id === 'search_block_form') {
+        $form['actions']['submit']['#attributes']['class'][] = 'btn btn-outline-success';
+    }
 }
