@@ -1,0 +1,9 @@
+name: Fiorella
+type: theme
+description: 'Un thème Drupal.'
+core_version_requirement: '>=10'
+base theme: false
+libraries:
+  - fiorella/global
+#libraries-override:
+#  core/jquery: false

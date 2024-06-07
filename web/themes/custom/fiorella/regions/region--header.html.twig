@@ -1,0 +1,26 @@
+{% if content %}
+  <div{{ attributes }}>
+    {{ content }}
+  </div>
+
+  {% if show %}
+  <h2>Mon prénom est {{ prenom | upper }}</h2>
+  <p>Je suis né le {{ birthday | date('d/m/Y') }}</p>
+  <p>J'ai {{ age.y }} ans</p>
+  
+  <ul>
+    {% for contact in contacts %}
+      <li>{{ contact }}</li>
+    {% endfor %}
+  </ul>
+
+  <ul>
+    {% for car in cars | slice(0, 2) %}
+      <li>{{ car.name }}</li>
+    {% endfor %}
+  </ul>
+
+  {{ test }}
+  {{ checkbox }}
+  {% endif %}
+{% endif %}
