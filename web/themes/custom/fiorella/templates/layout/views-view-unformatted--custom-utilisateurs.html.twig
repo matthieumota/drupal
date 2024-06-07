@@ -1,0 +1,13 @@
+<div class="carousel-inner">
+  {% for row in rows %}
+    {%
+      set row_classes = [
+        'carousel-item',
+        loop.first ? 'active',
+      ]
+    %}
+    <div{{ row.attributes.addClass(row_classes) }}>
+      {{- row.content -}}
+    </div>
+  {% endfor %}
+</div>

@@ -63,47 +63,48 @@
 
 <div class="container">
   {{ page.breadcrumb }}
-
   {{ page.highlighted }}
-
   {{ page.help }}
 
-  <main role="main">
-    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-
-    <div>
-        ELEMENTS MIS EN AVANT
-    </div>
-
-    <div class="layout-content">
-      {{ page.content }}
-    </div>{# /.layout-content #}
-
-    {% if page.sidebar_first %}
-      <aside class="layout-sidebar-first" role="complementary">
-        {{ page.sidebar_first }}
-      </aside>
-    {% endif %}
-
-    {% if page.sidebar_second %}
-      <aside class="layout-sidebar-second" role="complementary">
-        {{ page.sidebar_second }}
-      </aside>
-    {% endif %}
-
-  </main>
-
-  {% if page.footer %}
-    <footer role="contentinfo">
-      {{ page.footer }}
-    </footer>
+  {% if featured %}
+    {{ featured }}
   {% endif %}
 
-</div>{# /.layout-container #}
+  <main>
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
+    <div class="row">
+      <div {% if page.sidebar_first or page.sidebar_second %} class="col-lg-9" {% endif %}>
+        {{ page.content }}
+      </div>
+
+      {% if page.sidebar_first or page.sidebar_second %}
+      <div class="col-lg-3">
+        {% if page.sidebar_first %}
+          <aside>
+            {{ page.sidebar_first }}
+          </aside>
+        {% endif %}
+
+        {% if page.sidebar_second %}
+          <aside>
+            {{ page.sidebar_second }}
+          </aside>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+  </main>
+</div>
+
+{% if page.footer %}
 <footer class="py-5 text-center text-body-secondary bg-body-tertiary">
-  <p class="mb-0">Copyright 2023 &copy Drupal.</p>
+  <div class="container">
+    {{ page.footer }}
+  </div>
 </footer>
+{% endif %}
 
 {# Un commentaire #}
 {% set name = '<script>Drupal2222</script>' %}

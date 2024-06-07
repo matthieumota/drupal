@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\block\Entity\Block;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -30,6 +31,22 @@ function fiorella_preprocess_page(array &$variables) {
 
 function fiorella_preprocess_page__front(array &$variables) {
     $variables['toto'] = 'Toto';
+
+    $variables['featured'] = [
+        '#type' => 'view',
+        '#name' => 'utilisateurs', // Nom de la vue
+        '#display_id' => 'block_1', // Affichage de la vue
+    ];
+}
+
+function fiorella_preprocess_region__footer(array &$variables) {
+    //$elements = &$variables['elements'];
+
+    /*foreach ($elements as &$element) {
+        if (is_array($element) && $element['#theme'] === 'block') {
+            $element['#attributes']['class'][] = 'col-lg-4 col-md-6';
+        }
+    }*/
 }
 
 function fiorella_preprocess_block(array &$variables) {
@@ -38,6 +55,23 @@ function fiorella_preprocess_block(array &$variables) {
     if ($id === 'block-fiorella-powered') {
         $variables['attributes']['class'][] = 'container';
     }
+
+    // On charge tous les blocs (à optimiser) pour trouver les blocs de la région footer et modifier
+    // leur classe
+    $block = Block::load($variables['elements']['#id']);
+
+    if ($block->getRegion() === 'footer') {
+        $variables['attributes']['class'][] = 'col-lg-4 col-md-6';
+    }
+}
+
+function fiorella_preprocess_block__fiorella_powered(array &$variables) {
+    $siteName = \Drupal::config('system.site')->get('name');
+
+    $variables['content'] = [
+        '#markup' => '<p class="mb-0">Copyright '.date('Y').' &copy; '.$siteName.'.</p>'
+    ];
+    $variables['site_name'] = $siteName;
 }
 
 function fiorella_preprocess_region__header(array &$variables) {
@@ -89,4 +123,39 @@ function fiorella_preprocess_menu(array &$variables, $hook) {
             $item['is_active'] = $item['url']->toString() === $current_path;
         }
     }
+}
+
+function fiorella_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+    $suggestions[] = 'views_view_unformatted__custom_' . $variables['view']->id();
+}
+
+function fiorella_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+    $suggestions[] = 'views_view__custom_' . $variables['view']->id();
+  }
+
+function fiorella_preprocess_node(array &$variables) {
+    $variables['content']['custom'] = [
+        '#markup' => 'Je veux être avant l\'image',
+        '#weight' => -2,
+    ];
+
+    $variables['content']['present'] = [
+        '#theme' => 'fiorella',
+        '#firstname' => 'Fiorella',
+        '#hobbies' => [1, 2, 3],
+    ];
+}
+
+function fiorella_theme($existing, $type, $theme, $path) {
+    // On peut créer son propre "template" render array réutilisable
+    return [
+        'fiorella' => [
+            'template' => 'renders/fiorella', // fiorella.html.twig
+            'variables' => [
+                'firstname' => '',
+                'lastname' => '',
+                'hobbies' => [],
+            ],
+        ],
+    ];
 }
