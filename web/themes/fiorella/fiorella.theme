@@ -1,0 +1,54 @@
+<?php
+
+use Drupal\Core\Datetime\DrupalDateTime;
+
+function fiorella_page_attachments_alter(array &$attachments) {
+    foreach ($attachments['#attached']['html_head'] as $key => $attachment) {
+        if ($attachment[1] == 'system_meta_generator') {
+            unset($attachments['#attached']['html_head'][$key]);
+        }
+    }
+}
+
+function fiorella_preprocess_html(array &$variables) {
+    $variables['attributes']['class'][] = 'fiorella';
+    $variables['attributes']['id'] = uniqid();
+}
+
+function fiorella_preprocess_page(array &$variables) {
+    // On peut faire appel à des services pour avoir des données du site
+    $uri = \Drupal::request()->getRequestUri();
+
+    if ($variables['is_front']) {
+        dump('On est sur la home');
+        $variables['#attached']['library'][] = 'fiorella/global';
+    }
+
+    // Je charge la librairie seulement sur la page /articles
+    if (str_contains($uri, '/user/1')) {
+        dump('On est sur le profil');
+        $variables['#attached']['library'][] = 'fiorella/global';
+    }
+
+    $variables['firstname'] = 'Fiorella';
+}
+
+function fiorella_preprocess_block(array &$variables) {
+    $id = $variables['attributes']['id'];
+
+    if ($id === 'block-fiorella-powered') {
+        $variables['attributes']['class'][] = 'container';
+    }
+}
+
+function fiorella_preprocess_region__header(array &$variables) {
+    $variables['firstname'] = 'Fiorella';
+    $birthday = new DrupalDateTime('2019-12-31');
+    $variables['age'] = $birthday->diff(new DrupalDateTime());
+}
+
+function fiorella_preprocess_block__fiorella_powered(array &$variables) {
+    $variables['content'] = [
+        '#markup' => '<p>Tous droits réservés. '.date('Y').'</p>',
+    ];
+}
