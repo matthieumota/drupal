@@ -1,0 +1,5 @@
+fiofio.settings:
+  type: config_object
+  mapping:
+    message:
+      type: string

@@ -14,3 +14,11 @@ fiofio.hello:
     name: .+
     birthday: .+
     _permission: 'access content'
+
+fiofio.settings:
+  path: /admin/config/fiofio/settings
+  defaults:
+    _form: Drupal\fiofio\Form\ConfigForm
+    _title: 'Réglages Fiofio'
+  requirements:
+    _permission: 'access content'
