@@ -5,3 +5,12 @@ fiofio.say:
   requirements:
     count: \d+ # Si on veut rendre count "obligatoire"
     _permission: 'view fiofio'
+
+fiofio.hello:
+  path: /hello/{name}/{birthday}
+  defaults:
+    _controller: Drupal\fiofio\Controller\HelloController
+  requirements:
+    name: .+
+    birthday: .+
+    _permission: 'access content'

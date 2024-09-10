@@ -7,3 +7,7 @@ services:
   #fiofio.controller:
   #  class: Drupal\fiofio\Controller\SaysController
   #  autowire: true
+
+  fiofio.person:
+    class: Drupal\fiofio\Person
+  Drupal\fiofio\Person: '@fiofio.person'
