@@ -22,3 +22,10 @@ fiofio.settings:
     _title: 'Réglages Fiofio'
   requirements:
     _permission: 'access content'
+
+fiofio.form:
+  path: /user/form
+  defaults:
+    _form: Drupal\fiofio\Form\UserForm
+  requirements:
+    _permission: 'access content'

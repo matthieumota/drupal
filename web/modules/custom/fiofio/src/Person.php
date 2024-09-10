@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Person
 {
-    public function present(string $name, string $birthday): string
+    public function present(string $name, string $birthday, bool $upper = false): string
     {
         $birthday = new DrupalDateTime($birthday);
 
@@ -19,6 +19,6 @@ class Person
 
         $age = $birthday->diff(new DrupalDateTime())->y;
 
-        return $name.' a '.$age.' ans.';
+        return ($upper ? strtoupper($name) : $name).' a '.$age.' ans.';
     }
 }

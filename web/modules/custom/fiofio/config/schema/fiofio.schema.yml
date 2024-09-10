@@ -3,3 +3,5 @@ fiofio.settings:
   mapping:
     message:
       type: string
+    upper:
+      type: boolean

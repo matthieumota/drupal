@@ -25,11 +25,11 @@ class HelloController extends ControllerBase
     public function __invoke(string $name, string $birthday)
     {
         return [
-            ['#markup' => $this->person->present($name, $birthday)],
+            // ['#markup' => $this->person->present($name, $birthday)],
 
             [
                 '#theme' => 'my_template',
-                '#firstname' => $name,
+                '#firstname' => $this->person->present($name, $birthday, $this->config('fiofio.settings')->get('upper')),
             ],
 
             \Drupal::formBuilder()->getForm(BasicForm::class),
