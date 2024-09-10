@@ -11,3 +11,7 @@ function fiofio_theme($existing, $type, $theme, $path) {
         ],
     ];
 }
+
+function fiofio_cron() {
+    \Drupal::messenger()->addMessage('Je suis un hook');
+}

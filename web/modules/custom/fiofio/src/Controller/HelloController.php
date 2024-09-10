@@ -3,6 +3,7 @@
 namespace Drupal\fiofio\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\fiofio\Form\BasicForm;
 use Drupal\fiofio\Person;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -30,6 +31,8 @@ class HelloController extends ControllerBase
                 '#theme' => 'my_template',
                 '#firstname' => $name,
             ],
+
+            \Drupal::formBuilder()->getForm(BasicForm::class),
         ];
     }
 }
