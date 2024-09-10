@@ -1,0 +1,9 @@
+services:
+  Drupal\fiofio\FioGenerator:
+    class: Drupal\fiofio\FioGenerator
+    autowire: true
+    arguments:
+      $logging: '%security.enable_super_user%'
+  #fiofio.controller:
+  #  class: Drupal\fiofio\Controller\SaysController
+  #  autowire: true

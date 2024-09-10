@@ -1,0 +1,7 @@
+fiofio.say:
+  path: /fiofio/say/{count}
+  defaults:
+    _controller: Drupal\fiofio\Controller\SaysController::index
+  requirements:
+    count: \d+ # Si on veut rendre count "obligatoire"
+    _permission: 'view fiofio'

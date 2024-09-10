@@ -1,0 +1,7 @@
+fiofio.resource:
+  route_name: fiofio.say
+  route_parameters:
+    count: 10
+  title: Exemple Fiofio
+  appears_on:
+    - system.admin_content
