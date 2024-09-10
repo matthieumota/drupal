@@ -5,7 +5,6 @@ namespace Drupal\fiofio\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\fiofio\Person;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 class HelloController extends ControllerBase
 {
@@ -24,8 +23,13 @@ class HelloController extends ControllerBase
 
     public function __invoke(string $name, string $birthday)
     {
-        return new Response(
-            $this->person->present($name, $birthday)
-        );
+        return [
+            ['#markup' => $this->person->present($name, $birthday)],
+
+            [
+                '#theme' => 'my_template',
+                '#firstname' => $name,
+            ],
+        ];
     }
 }

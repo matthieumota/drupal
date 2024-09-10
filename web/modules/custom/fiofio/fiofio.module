@@ -1,0 +1,13 @@
+<?php
+
+function fiofio_theme($existing, $type, $theme, $path) {
+    return [
+        // Ici, on crée un template réutilisable
+        'my_template' => [
+            'template' => 'my_template',
+            'variables' => [
+                'firstname' => '',
+            ],
+        ],
+    ];
+}
