@@ -5,8 +5,7 @@
  * Install, update and uninstall functions for the Event City Manager module.
  */
 
-function event_city_manager_schema()
-{
+function event_city_manager_schema() {
     $schema['cities'] = [
         'fields' => [
             'id' => [
@@ -24,4 +23,12 @@ function event_city_manager_schema()
     ];
 
     return $schema;
+}
+
+function event_city_manager_install() {
+    \Drupal::database()->insert('cities')->fields(['name'])
+        ->values(['Paris'])
+        ->values(['Lille'])
+        ->values(['Lyon'])
+        ->execute();
 }

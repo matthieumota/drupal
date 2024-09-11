@@ -1,0 +1,7 @@
+event_city_manager.form:
+  path: /evenement/nouveau
+  defaults:
+    _title: Ajouter un événement
+    _form: Drupal\event_city_manager\Form\EventForm
+  requirements:
+    _permission: 'access content'
