@@ -1,6 +1,16 @@
 <?php
 
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Form\FormStateInterface;
+
+function fiorella_form_fiofio_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $form['name']['#title'] = 'Ce que je veux';
+    // unset($form['email']['#ajax']);
+    // dump($form_id, $form, $form_state, 'theme');
+
+    // $form['#validate'][] = 'fiofio_validate_my_form';
+    // $form['actions']['submit']['#submit'][] = 'fiofio_handle_my_form';
+}
 
 function fiorella_page_attachments_alter(array &$attachments) {
     foreach ($attachments['#attached']['html_head'] as $key => $attachment) {
