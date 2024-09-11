@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Event City Manager module.
+ */
+
+function event_city_manager_schema()
+{
+    $schema['cities'] = [
+        'fields' => [
+            'id' => [
+                'type' => 'serial',
+                'not null' => true,
+            ],
+            'name' => [
+                'type' => 'varchar',
+                'length' => 255,
+                'default' => '',
+                'not null' => true,
+            ],
+        ],
+        'primary key' => ['id'],
+    ];
+
+    return $schema;
+}
