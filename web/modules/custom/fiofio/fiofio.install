@@ -1,0 +1,43 @@
+<?php
+
+function fiofio_schema() {
+    $schema['fiofio'] = [
+        'fields' => [
+            'id' => [
+                'type' => 'serial',
+                'not null' => true,
+            ],
+            'email' => [
+                'type' => 'varchar',
+                'length' => 255,
+                'default' => '',
+                'not null' => true,
+            ],
+            'uid' => [
+                'type' => 'int',
+                'default' => 0,
+                'not null' => true,
+            ],
+            'created_at' => [
+                'type' => 'int',
+                'mysql_type' => 'datetime',
+                'mysql_default' => 'CURRENT_TIMESTAMP',
+                'not null' => true,
+            ],
+        ],
+        'primary key' => ['id'],
+        'indexes' => [
+            'created_at' => ['created_at'],
+        ],
+        'foreign keys' => [
+            'fiofio' => [
+                'table' => 'users',
+                'columns' => [
+                    'uid' => 'uid',
+                ],
+            ],
+        ],
+    ];
+  
+    return $schema;
+}

@@ -120,9 +120,17 @@ class UserForm extends FormBase
 
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
-        $this->messenger()->addMessage(t('Formulaire envoyé avec @email', ['@email' => $form_state->getValue('email')]));
+        //$log = "Name: {$form_state->getValue('name')}; Email: {$form_state->getValue('email')}; Date de naissance: {$form_state->getValue('birthday')}";
+        //$this->logger('default')->info($log);
 
-        $log = "Name: {$form_state->getValue('name')}; Email: {$form_state->getValue('email')}; Date de naissance: {$form_state->getValue('birthday')}";
-        $this->logger('default')->info($log);
+        $database = \Drupal::database();
+        $uid = $this->currentUser()->id();
+
+        $database->insert('fiofio')
+            ->fields(['email', 'uid', 'created_at'])
+            ->values([$form_state->getValue('email'), $uid, $form_state->getValue('birthday')])
+            ->execute();
+
+        $this->messenger()->addMessage(t('Formulaire envoyé avec @email', ['@email' => $form_state->getValue('email')]));
     }
 }

@@ -29,3 +29,20 @@ fiofio.form:
     _form: Drupal\fiofio\Form\UserForm
   requirements:
     _permission: 'access content'
+
+fiofio.list:
+  path: /admin/fiofio/list
+  defaults:
+    _controller: Drupal\fiofio\Controller\ListController::index
+    _title: 'Liste Fiofio'
+  requirements:
+    _permission: 'view fiofio'
+
+fiofio.delete:
+  path: /admin/fiofio/{id}/delete
+  defaults:
+    _form: Drupal\fiofio\Form\DeleteForm
+    _title: 'Confirmer suppression'
+  requirements:
+    _permission: 'delete fiofio'
+    id: ^\d+$

@@ -4,3 +4,10 @@ fiofio.settings:
   description: 'Modifier les réglages de Fiofio'
   parent: system.admin_config_system
   weight: 99
+
+fiofio.list:
+  title: 'Liste Fiofio'
+  route_name: fiofio.list
+  description: 'Liste Fiofio'
+  parent: system.admin_reports
+  weight: 99

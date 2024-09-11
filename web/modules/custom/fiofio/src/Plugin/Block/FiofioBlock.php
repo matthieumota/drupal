@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\fiofio\Person;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   admin_label = @Translation("Fiofio Block"),
  * )
  */
-class FiofioBlock extends BlockBase implements ContainerFactoryPluginInterface
+class FiofioBlock extends BlockBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface
 {
     public function __construct(
         array $configuration,
@@ -44,9 +45,38 @@ class FiofioBlock extends BlockBase implements ContainerFactoryPluginInterface
         $config = $this->config->get('fiofio.settings');
         $name = $config->get('message');
 
+        $texts = ['A', 'B', 'C'];
+
+        return [
+            'cache' => [
+                '#type' => 'markup',
+                '#markup' => $texts[array_rand($texts)],
+            ],
+            'text' => [
+                '#lazy_builder' => [self::class.'::renderText', []],
+                '#create_placeholder' => true,
+            ],
+        ];
+
         return [
             '#theme' => 'my_template',
             '#firstname' => $this->person->present($name, '2019-12-31', $config->get('upper')),
+        ];
+    }
+
+    public static function renderText()
+    {
+        $texts = ['A', 'B', 'C'];
+
+        return [
+            '#type' => 'markup',
+            '#markup' => $texts[array_rand($texts)],
+        ];
+    }
+
+    public static function trustedCallbacks() {
+        return [
+            'renderText',
         ];
     }
 
