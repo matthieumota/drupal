@@ -2,6 +2,11 @@
 
 namespace Drupal\fiofio\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\PrependCommand;
+use Drupal\Core\Ajax\RemoveCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -25,7 +30,28 @@ class UserForm extends FormBase
             '#type' => 'textfield',
             '#title' => t('Email'),
             '#required' => true,
+            '#ajax' => [
+                'callback' => '::ajaxCallback',
+                'event' => 'input', // événement javascript
+                'wrapper' => 'output', // id de l'élément qui va recevoir la "sortie" de la requête ajax
+                'progress' => [
+                    'type' => 'throbber',
+                    'message' => $this->t('Chargement...'),
+                ],
+            ],
         ];
+
+        // La partie AJAX
+        $form['message'] = [ // <div id="output">COOL</div> => COOL
+            '#type' => 'markup',
+            '#markup' => '',
+            '#prefix' => '<div id="output">',
+            '#suffix' => '</div>',
+        ];
+
+        /*if ($email = $form_state->getValue('email')) {
+            $form['message']['#markup'] = $email;
+        }*/
 
         $form['birthday'] = [
             '#type' => 'date',
@@ -36,9 +62,40 @@ class UserForm extends FormBase
         $form['submit'] = [
             '#type' => 'submit',
             '#value' => t('Envoyer'),
+            '#ajax' => [
+                'callback' => '::ajaxCallback',
+                'progress' => [
+                    'type' => 'throbber',
+                    'message' => $this->t('Chargement...'),
+                ],
+            ],
         ];
 
         return $form;
+    }
+
+    public function ajaxCallback(array &$form, FormStateInterface $form_state)
+    {
+        $form['message']['#markup'] = $form_state->getValue('email');
+
+        // Vérifier l'email en BDD...
+
+        $response = new AjaxResponse();
+        $response->addCommand(new ReplaceCommand('#output', $form['message']))
+            /*->addCommand(new OpenModalDialogCommand('Titre', [
+                '#markup' => $form_state->getValue('email'),
+                '#attached' => [
+                    'library' => ['core/drupal.dialog.ajax'],
+                ],
+            ]))*/
+            ->addCommand(new RemoveCommand('#messages'))
+            ->addCommand(new PrependCommand('#fiofio-user-form', [
+                '#type' => 'container',
+                '#attributes' => ['id' => 'messages'],
+                ['#type' => 'status_messages'],
+            ]));
+
+        return $response;
     }
 
     public function validateForm(array &$form, FormStateInterface $form_state)
