@@ -1,0 +1,33 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+function event_city_manager_form_node_event_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $form['field_city']['widget'][0]['value']['#type'] = 'select';
+    unset($form['field_city']['widget'][0]['value']['#size']);
+
+    $cities = \Drupal::database()
+        ->select('cities', 'c')
+        ->fields('c', ['name'])
+        ->execute()
+        ->fetchAll(\PDO::FETCH_ASSOC);
+
+    $options = [];
+
+    foreach ($cities as $city) {
+        $options[$city['name']] = $city['name'];
+    }
+
+    $form['field_city']['widget'][0]['value']['#options'] = $options;
+}
+
+function event_city_manager_theme($existing, $type, $theme, $path) {
+    return [
+        'events' => [
+            'template' => 'events',
+            'variables' => [
+                'events' => '',
+            ],
+        ],
+    ];
+}

@@ -1,0 +1,9 @@
+<div>
+    {% for event in events %}
+        <div>
+            - L'événement {{ event.title.value }} aura lieu à {{ event.field_city.value }} en {{ event.field_created.value  | date('Y') }}
+        </div>
+    {% endfor %}
+</div>
+
+<a href="{{ path('event_city_manager.form') }}">Ajouter un événement</a>

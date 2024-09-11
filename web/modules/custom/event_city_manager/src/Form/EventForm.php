@@ -2,6 +2,7 @@
 
 namespace Drupal\event_city_manager\Form;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
@@ -61,16 +62,28 @@ class EventForm extends FormBase
 
     public function validateForm(array &$form, FormStateInterface $form_state): void
     {
-        // @todo Validate the form here.
-        // Example:
-        // @code
-        //   if (mb_strlen($form_state->getValue('message')) < 10) {
-        //     $form_state->setErrorByName(
-        //       'message',
-        //       $this->t('Message should be at least 10 characters.'),
-        //     );
-        //   }
-        // @endcode
+        $title = $form_state->getValue('title');
+        $body = $form_state->getValue('body');
+        $created = $form_state->getValue('created');
+        $city = $form_state->getValue('city');
+
+        if (empty($title)) {
+            $form_state->setErrorByName('title', 'Le titre est vide');
+        }
+
+        if (empty($body)) {
+            $form_state->setErrorByName('body', 'Le contenu est vide');
+        }
+
+        // @todo valider que la date est supérieur à aujourd'hui ?
+        if ((new DrupalDateTime($created))->hasErrors()) {
+            $form_state->setErrorByName('created', 'La date est invalide');
+        }
+
+        // @todo valider que la ville existe en bdd
+        if (empty($city)) {
+            $form_state->setErrorByName('city', 'La ville est invalide');
+        }
     }
 
     public function submitForm(array &$form, FormStateInterface $form_state): void
@@ -85,6 +98,6 @@ class EventForm extends FormBase
             'field_city' => $form_state->getValue('city'),
         ])->save();
 
-        $form_state->setRedirect('<front>');
+        $form_state->setRedirect('event_city_manager.events');
     }
 }

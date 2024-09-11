@@ -5,3 +5,11 @@ event_city_manager.form:
     _form: Drupal\event_city_manager\Form\EventForm
   requirements:
     _permission: 'access content'
+
+event_city_manager.events:
+  path: /evenements
+  defaults:
+    _title: Evénements
+    _controller: Drupal\event_city_manager\Controller\EventController
+  requirements:
+    _permission: 'access content'
